@@ -1,0 +1,7 @@
+﻿<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Studying%20Backend/sistem_perpustakaan/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?_url=$1 [QSA,L]
+</IfModule>

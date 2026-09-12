@@ -1,0 +1,9 @@
+<?php
+namespace App\Controllers;
+use App\Core\Controller; use App\Models\ProdiRepository;
+class ProdiController extends Controller
+{ public function __construct(private ProdiRepository $repo) {}
+  public function index():void{echo '<div class="d-flex justify-content-between mb-3"><h2>Prodi</h2><a class="btn btn-primary" href="'.$this->url('/prodi/create').'">Tambah</a></div><table class="table"><tr><th>Kode</th><th>Nama</th><th></th></tr>';foreach($this->repo->all() as $d){$id=(int)$d['id'];echo '<tr><td>'.htmlspecialchars($d['kode']).'</td><td>'.htmlspecialchars($d['nama']).'</td><td><a class="btn btn-sm btn-warning" href="'.$this->url('/prodi/edit?id='.$id).'">Edit</a> <form class="d-inline" method="post" action="'.$this->url('/prodi/delete?id='.$id).'" onsubmit="return confirm(\'Hapus data ini?\')"><button class="btn btn-sm btn-danger">Hapus</button></form></td></tr>';}echo '</table>';}
+  public function create():void{$this->form('Tambah Prodi','/prodi/store',['kode'=>'','nama'=>'']);} public function edit():void{$d=$this->repo->find((int)($_GET['id']??0));$d?$this->form('Ubah Prodi','/prodi/update?id='.$d['id'],$d):print('Data tidak ditemukan.');}
+  private function form(string $t,string $a,array $d):void{echo '<h2>'.$t.'</h2><form method="post" action="'.$this->url($a).'"><div class="mb-3"><label>Kode</label><input class="form-control" name="kode" required value="'.htmlspecialchars($d['kode']).'"></div><div class="mb-3"><label>Nama</label><input class="form-control" name="nama" required value="'.htmlspecialchars($d['nama']).'"></div><button class="btn btn-primary">Simpan</button></form>';}
+  public function store():void{$this->repo->save($_POST);$this->redirect('/prodi');}public function update():void{$this->repo->save($_POST,(int)($_GET['id']??0));$this->redirect('/prodi');}public function delete():void{$this->repo->delete((int)($_GET['id']??0));$this->redirect('/prodi');}}
