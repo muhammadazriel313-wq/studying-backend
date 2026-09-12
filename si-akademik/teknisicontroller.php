@@ -136,4 +136,4 @@ class MahasiswaController extends Controller
             'status'   => 'aktif'
         ];
     }
-} /percobaan1
+} /percobaan1&2
